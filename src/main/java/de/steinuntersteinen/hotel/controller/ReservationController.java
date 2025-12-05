@@ -1,6 +1,8 @@
 package de.steinuntersteinen.hotel.controller;
 
 import de.steinuntersteinen.hotel.model.Reservation;
+import de.steinuntersteinen.hotel.repo.ReservationRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,19 +15,15 @@ import java.util.List;
 @RequestMapping("/reservations")
 class ReservationController {
 
+    private final ReservationRepository reservationRepository;
+
+    @Autowired
+    public ReservationController(ReservationRepository reservationRepository) {
+        this.reservationRepository = reservationRepository;
+    }
+
     @GetMapping
     public ResponseEntity<List<Reservation>> getReservations() {
-        return  ResponseEntity.ok(
-                Arrays.asList(
-                        new Reservation[] {
-                                new Reservation("1",
-                                        null,
-                                        null,
-                                        "Returnin a Reservation Object works",
-                                        "peter@mail.com",
-                                        2
-                                )}
-                )
-            );
+        return  ResponseEntity.ok(reservationRepository.findAll());
     }
 }
